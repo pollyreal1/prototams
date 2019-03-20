@@ -3,12 +3,13 @@
     <div class="card">
         <div class="card-header"><b>Assign Schedule</b></div>
         <div class="card-body">
-            <table class="table table-striped">
+            <table class="table table-striped datatable">
                 <thead>
                     <tr>
                         <th></th>
                         <th>Name</th>
                         <th>Schedule</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -55,6 +56,10 @@
         created(){
             this.getUsers();
             this.getSchedule();
+        },
+
+        updated(){
+            $('.datatable').DataTable();
         },
 
         methods:{

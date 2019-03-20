@@ -27,10 +27,10 @@ class UserScheduleController extends Controller
             $user_sched = $user_sched->where('user_id',$us['id'])->get()->pluck('sched_id');
             $user_scheds =[];
             foreach($user_sched as $sched){
-                $user_scheds[] = $schedules->where('sched_id',$sched)->first();
+                $user_scheds[] = $schedules->where(['sched_id'=>$sched,'status' => 1])->first();
 
             }
-            $us['schedule'] = $user_scheds;
+            $us['schedule'] = array_filter($user_scheds);
 
             return $us;
         });

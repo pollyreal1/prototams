@@ -23,7 +23,7 @@
 				{{ button_caption }}
 			</button>
 			<div class="row">
-				{{ moment().format('Y-MM-DD H:mm:ss') }}
+
 				<div class="col-md-12">
 					<div class="card">
 						<div class="card-header">
@@ -101,7 +101,7 @@ export default {
 
 	methods: {
 		getIndex () {
-			this.$axios.get( this.$store.state.server_path + 'ts?uid=1')
+			this.$axios.get( this.$store.state.server_path + 'ts?uid='+ this.$store.state.auth.id)
 			.then(res => {
 				this.timesheets = res.data.data
 				console.log(res.data)
@@ -112,7 +112,7 @@ export default {
 		clock() {
 			let current_moment = this.moment().utc().format('X')
 
-			this.$axios.get( this.$store.state.server_path + 'ts/add?uid=1&time=' + current_moment)
+			this.$axios.get( this.$store.state.server_path + 'ts/add?uid=' + this.$store.state.auth.id + '&time=' + current_moment)
 			.then(res => {
 				if (res.data.data.td_out == null) {
 					this.button_caption = "Time Out"

@@ -9,7 +9,8 @@ const store = new Vuex.Store({
 
 		// // Paul
 		// // BACKEND PATH
-		server_path: 'http://10.155.128.210/newtamsbackend/api/',
+		server_path: 'http://10.155.128.148/www/iplus/prototams/newtamsbackend/api/',
+		token: '',
 
 
 	},

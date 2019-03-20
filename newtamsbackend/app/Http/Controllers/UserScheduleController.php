@@ -27,7 +27,7 @@ class UserScheduleController extends Controller
             $user_sched = $user_sched->where('user_id',$us['id'])->get()->pluck('sched_id');
             $user_scheds =[];
             foreach($user_sched as $sched){
-                $user_scheds[] = $schedules->where(['sched_id'=>$sched,'status' => 1])->first();
+                $user_scheds[] = $schedules->where(['sched_id'=>$sched])->first();
 
             }
             $us['schedule'] = array_filter($user_scheds);
@@ -82,16 +82,17 @@ class UserScheduleController extends Controller
         if(!$validation->fails()){
 
             if(User_Sched::where('user_id',$request->post('user_id'))->first()){
-                User_Sched::where('user_id',$request->post('user_id'))->delete();
-            }
+                User_Sched::where(['user_id' => $request->post('user_id')])->update([
+                    'sched_id' => $request->post('sched_id'),
+                ]);
+            }else{
                 // foreach($request->post('sched_id') as $sched_id){
                     User_Sched::insert([
                         'user_id' => $request->post('user_id'),
                         'sched_id' => $request->post('sched_id'),
                     ]);
                 // }
-
-
+            }
             $data = [
                 'msg' => 'Successful',
                 'status' => 'success'

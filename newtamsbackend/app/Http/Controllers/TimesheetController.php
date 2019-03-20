@@ -36,10 +36,10 @@ class TimesheetController extends Controller
 	}
 
 	/**
-	 * Store
-	 *
-	 * @return [type] [description]
-	 */
+	* Store
+	*
+	* @return [type] [description]
+	*/
 	public function store (Request $request) {
 
 		$ts = new Timesheet();
@@ -54,23 +54,23 @@ class TimesheetController extends Controller
 		}
 
 		/**
-		 *	Time Sheet Store
-		 *		Hey! First, we need to validate
-		 *		if its New in (Time in) or Out (Time out)
-		 *
-		 * 		Check the last row, if exist
-		 * 			Check if its time in is not null, if NOT Null
-		 * 				** Its TIME OUT
-		 * 			If Null,
-		 * 				** Its TIME In
-		 *
-		 * 		If no row retrieve
-		 * 				** Its TIME In
-		 *
-		 *	-------------------------------------------
-		 *	Last update: 03-18-2019
-		 *	@Khurt
-		 */
+		*	Time Sheet Store
+		*		Hey! First, we need to validate
+		*		if its New in (Time in) or Out (Time out)
+		*
+		* 		Check the last row, if exist
+		* 			Check if its time in is not null, if NOT Null
+		* 				** Its TIME OUT
+		* 			If Null,
+		* 				** Its TIME In
+		*
+		* 		If no row retrieve
+		* 				** Its TIME In
+		*
+		*	-------------------------------------------
+		*	Last update: 03-18-2019
+		*	@Khurt
+		*/
 
 		// Time in or out Handler
 		$col = '';
@@ -129,6 +129,10 @@ class TimesheetController extends Controller
 			// ** Its Time in
 			else {
 
+
+				$us = new User_Sched();
+				$sched_id = $us->where('user_id',$request->get('uid'))->value('sched_id');
+
 				// We need to calculate the UNDERTIME
 				// and WORKED HOURS
 				$td_in = $this->makeCarbon($request->get('time'));
@@ -149,7 +153,7 @@ class TimesheetController extends Controller
 					'user_id' => $request->get('uid'),
 					'td_in' => $td_in,
 					'late' => $late,
-					'sched_id' => 1111,
+					'sched_id' => $sched_id,
 				];
 
 				// Do update
@@ -194,7 +198,7 @@ class TimesheetController extends Controller
 				'user_id' => $request->get('uid'),
 				'td_in' => $td_in,
 				'late' => $late,
-				'sched_id' => 1111,
+				'sched_id' => $sched_id,
 			];
 
 			// Do update

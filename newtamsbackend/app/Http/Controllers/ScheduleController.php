@@ -11,7 +11,7 @@ class ScheduleController extends Controller
 
     public function index(){
 
-        $schedule = Schedule::get();
+        $schedule = Schedule::where('status',1)->get();
 
         $data = [
             'msg' => $schedule,
@@ -158,6 +158,41 @@ class ScheduleController extends Controller
         }
 
         return response()->json($data);
+
+    }
+
+    public function schedStatus(Request $request){
+
+        $validation = Validator::make($request->all(),[
+            'sched_id' => 'required',
+        ]);
+
+        if(!$validation->fails()){
+
+            $late_monitor = Schedule::where('sched_id',$request->post('sched_id'))->update([
+                'status' => 0
+            ]);
+
+
+            $data = [
+                'msg' => 'successful',
+                'status' => 'success'
+            ];
+
+        }else{
+
+            $data = [
+                'msg' => $validation->errors(),
+                'status' => 'failed'
+            ];
+
+
+        }
+        return response()->json($data);
+
+
+
+
 
     }
 }

@@ -63,6 +63,24 @@ export default Vue.mixin({
             return new Date('7/10/2013 '+time).toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3");
         },
 
+        timeConvert(n) {
+          var num = n;
+          var hours = (num / 60);
+          var rhours = Math.floor(hours);
+          var minutes = (hours - rhours) * 60;
+          var rminutes = (Math.round(minutes) == 0) ? '00' : Math.round(minutes);
+          return rhours + ":" + rminutes + ':00';
+        },
+
+        timeConvertToHuman(n) {
+          var num = n;
+          var hours = (num / 60);
+          var rhours = Math.floor(hours);
+          var minutes = (hours - rhours) * 60;
+          var rminutes = (Math.round(minutes) == 0) ? '00' : Math.round(minutes);
+          return (rhours == 0) ? (rminutes + ' mins') : (rhours + " hr " + rminutes + ' mins');
+        }
+
 
     },
 

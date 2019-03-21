@@ -200,6 +200,8 @@ class ScheduleController extends Controller
             // generate sched id
             $sched_id = mt_rand(0000, 9999);
             $days = [1,2,3,4,5];
+            $min_hrs = !empty($request->post('min_hrs')) ?($request->post('min_hrs') * 60):0;
+            $break_time = $request->post('break_time') * 60;
 
 
             foreach($days as $day){
@@ -208,8 +210,8 @@ class ScheduleController extends Controller
                     'sched_type' => $request->post('sched_type'),
                     'shift_start' => $request->post('shift_start'),
                     'shift_end' => $request->post('shift_end'),
-                    'min_hrs' => !empty($request->post('min_hrs'))?$request->post('min_hrs'):0,
-                    'break_time' => $request->post('break_time'),
+                    'min_hrs' => $min_hrs,
+                    'break_time' => $break_time,
                     'grace_period' => !empty($request->post('grace_period'))?$request->post('grace_period'):0,
                     'days' => $day,
                     'late_monitor' => $request->post('late_monitor'),
@@ -236,33 +238,47 @@ class ScheduleController extends Controller
 
     public function customized(Request $request){
 
+        if(!empty($request->post('array'))){
+
             // generate sched id
             $sched_id = mt_rand(0000, 9999);
 
-            foreach($days as $day){
+            foreach($request->post('array') as $day){
+                $min_hrs = !empty($day['min_hrs']) ?($day['min_hrs'] * 60):0;
+                $break_time = $day['break_time'] * 60;
                 Schedule::insert([
                     'sched_id' => $sched_id,
                     'sched_type' =>$day['sched_type'],
                     'shift_start' => $day['shift_start'],
                     'shift_end' => $day['shift_end'],
-                    'min_hrs' => !empty($day['min_hrs']) ? $day['min_hrs']:0,
-                    'break_time' => $day['min_hrs'],
+                    'min_hrs' => $min_hrs,
+                    'break_time' => $break_time,
                     'grace_period' => !empty($day['grace_period'])?$day['grace_period']:0,
                     'days' => $day['day'],
-                    'late_monitor' => $day['latte_monitor'],
+                    'late_monitor' => $day['late_monitor'],
                  ]);
-
             }
-
             $data = [
                 'msg' => 'successful',
                 'status' => 'success'
             ];
+        }else{
+
+            $data =[
+                'msg' => 'Please input some data',
+                'status' =>'failed'
+            ];
+
+
+
+        }
+
+
         return response()->json($data);
     }
 
 
-    
+
 
 
 }

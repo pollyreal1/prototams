@@ -25,7 +25,7 @@ class SchedTbl extends Migration
             $table->integer('break_time');
             $table->integer('grace_period')->nullable();
             $table->boolean('late_monitor')->default(1);
-            $table->string('status')->nullable();
+            $table->string('status')->default(1);
             $table->string('days');
             $table->timestamps();
 

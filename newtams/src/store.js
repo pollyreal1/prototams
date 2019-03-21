@@ -9,7 +9,7 @@ const store = new Vuex.Store({
 
 		// // Paul
 		// // BACKEND PATH
-		server_path: 'http://10.155.128.210/prototams2/newtamsbackend/api/',
+		server_path: 'http://localhost/prototams/newtamsbackend/api/',
 		token: '',
 
 

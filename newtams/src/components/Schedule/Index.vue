@@ -58,6 +58,7 @@
                 this.axiosRequest('get', this.$store.state.server_path + 'Schedule-index')
                 .then(res => {
                     this.schedules = res.data.msg;
+                    console.log(this.schedules);
                 })
                 .catch(err => console.log(err));
             },

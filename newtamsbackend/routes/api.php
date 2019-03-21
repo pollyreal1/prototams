@@ -27,7 +27,9 @@ Route::group(['middleware' => ['cors']], function (){
     Route::post('Schedule-update', 'ScheduleController@update');
     Route::get('Schedule-show', 'ScheduleController@show');
     Route::post('Schedule-status', 'ScheduleController@schedStatus');
-    
+    Route::post('Schedule-regular', 'ScheduleController@regular');
+    Route::post('Schedule-customized', 'ScheduleController@customized');
+
 
 
     Route::post('UserSchedule-store', 'UserScheduleController@store');

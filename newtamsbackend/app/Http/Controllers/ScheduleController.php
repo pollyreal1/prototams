@@ -62,11 +62,9 @@ class ScheduleController extends Controller
                 //     }
                 // }
                 $array_days = [1,2,3,4,5];
-
             }
 
             $days = json_encode($array_days);
-            // dd(json_decode($days,true));
             Schedule::insert([
                 'sched_id' => $sched_id,
                 'sched_type' => $request->post('sched_type'),
@@ -172,8 +170,6 @@ class ScheduleController extends Controller
             $late_monitor = Schedule::where('sched_id',$request->post('sched_id'))->update([
                 'status' => 0
             ]);
-
-
             $data = [
                 'msg' => 'successful',
                 'status' => 'success'
@@ -185,14 +181,88 @@ class ScheduleController extends Controller
                 'msg' => $validation->errors(),
                 'status' => 'failed'
             ];
+        }
+        return response()->json($data);
+    }
 
+    public function regular(Request $request){
+
+        // for Validation
+        $validation = Validator::make($request->all(),[
+            'sched_type' => 'required',
+            'shift_start' => 'required|date_format:G:i:s',
+            'shift_end' => 'required|date_format:G:i:s',
+            'break_time' => 'required',
+        ]);
+
+
+        if(!$validation->fails()){
+            // generate sched id
+            $sched_id = mt_rand(0000, 9999);
+            $days = [1,2,3,4,5];
+
+
+            foreach($days as $day){
+                Schedule::insert([
+                    'sched_id' => $sched_id,
+                    'sched_type' => $request->post('sched_type'),
+                    'shift_start' => $request->post('shift_start'),
+                    'shift_end' => $request->post('shift_end'),
+                    'min_hrs' => !empty($request->post('min_hrs'))?$request->post('min_hrs'):0,
+                    'break_time' => $request->post('break_time'),
+                    'grace_period' => !empty($request->post('grace_period'))?$request->post('grace_period'):0,
+                    'days' => $day,
+                    'late_monitor' => $request->post('late_monitor'),
+                 ]);
+
+            }
+
+            $data = [
+                'msg' => 'successful',
+                'status' => 'success'
+            ];
+
+
+        }else{
+
+            $data = [
+                'msg' => $validation->errors(),
+                'status' => 'failed'
+            ];
 
         }
         return response()->json($data);
-
-
-
-
-
     }
+
+    public function customized(Request $request){
+
+            // generate sched id
+            $sched_id = mt_rand(0000, 9999);
+
+            foreach($days as $day){
+                Schedule::insert([
+                    'sched_id' => $sched_id,
+                    'sched_type' =>$day['sched_type'],
+                    'shift_start' => $day['shift_start'],
+                    'shift_end' => $day['shift_end'],
+                    'min_hrs' => !empty($day['min_hrs']) ? $day['min_hrs']:0,
+                    'break_time' => $day['min_hrs'],
+                    'grace_period' => !empty($day['grace_period'])?$day['grace_period']:0,
+                    'days' => $day['day'],
+                    'late_monitor' => $day['latte_monitor'],
+                 ]);
+
+            }
+
+            $data = [
+                'msg' => 'successful',
+                'status' => 'success'
+            ];
+        return response()->json($data);
+    }
+
+
+    
+
+
 }

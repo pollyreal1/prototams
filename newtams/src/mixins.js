@@ -53,6 +53,12 @@ export default Vue.mixin({
 			this.$router.push({ name: name, params: params })
 		},
 
+
+    toWeekDay(id){
+      let weekday = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      return weekday[id];
+    },
+
         toHumanTime(time){
             return new Date('7/10/2013 '+time).toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3");
         },
